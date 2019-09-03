@@ -1,14 +1,14 @@
 import React from "react";
-import classNames from 'classnames';
+import classNames from "classnames";
 
 import "./button.style.scss";
 
-const Button = (props) => {
+const Button = props => {
   const buttonClass = classNames("button", {
     "button--confirm": props.confirm,
     "button--danger": props.danger
   });
- 
+
   return (
     <button
       className={buttonClass}
@@ -18,5 +18,6 @@ const Button = (props) => {
       {props.children}
     </button>
   );
-}
+};
+
 export default Button;

@@ -16,12 +16,8 @@ const InterviewerListItem = ({
       } interviewers__item`}
       onClick={setInterviewer}
     >
-      <img
-        className="interviewers__item-image"
-        src={`${avatar}`}
-        alt={`${name}`}
-      />
-      {selected ? name : ""}
+      <img className="interviewers__item-image" src={avatar} alt={name} />
+      {selected && name}
     </li>
   );
 };
