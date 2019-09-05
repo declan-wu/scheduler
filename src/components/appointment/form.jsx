@@ -2,23 +2,18 @@ import React, { useState } from "react";
 import Button from "components/button/";
 import InterviewerList from "components/interviewer-list";
 
-const Form = props => {
-  const [name, setName] = useState(props.name || "");
+export default function Form(props) {
   const [interviewer, setInterviewer] = useState(props.interviewer || null);
-  const [error, setError] = useState("");
+  const [studentName, setStudentName] = useState(props.name || "");
 
-  const reset = () => {
-    setName("");
+  const reset = function() {
     setInterviewer(null);
+    setStudentName("");
   };
 
-  const validate = () => {
-    if (name === "") {
-      setError("Student name cannot be blank");
-      return;
-    }
-    setError("");
-    props.onSave(name, interviewer);
+  const cancel = function() {
+    props.onCancel();
+    reset();
   };
 
   return (
@@ -27,34 +22,32 @@ const Form = props => {
         <form autoComplete="off" onSubmit={event => event.preventDefault()}>
           <input
             className="appointment__create-input text--semi-bold"
-            value={name}
+            name="name"
             type="text"
             placeholder="Enter Student Name"
-            onChange={event => {
-              setName(event.target.value);
-            }}
-            data-testid="student-name-input"
+            value={studentName}
+            onChange={event => setStudentName(event.target.value)}
           />
         </form>
-        <section className="appointment__validation">{error}</section>
         <InterviewerList
           interviewers={props.interviewers}
           value={interviewer}
-          setInterviewer={setInterviewer}
+          onChange={setInterviewer}
         />
       </section>
       <section className="appointment__card-right">
         <section className="appointment__actions">
-          <Button danger onClick={() => props.onCancel(reset())}>
+          <Button onClick={() => cancel()} danger>
             Cancel
           </Button>
-          <Button confirm onClick={() => validate()}>
+          <Button
+            onClick={() => props.onSave(studentName, interviewer)}
+            confirm
+          >
             Save
           </Button>
         </section>
       </section>
     </main>
   );
-};
-
-export default Form;
+}
