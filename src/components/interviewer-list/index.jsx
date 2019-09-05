@@ -2,22 +2,23 @@ import React from "react";
 import "./interviewer-list.scss";
 import InterviewerListItem from "components/interviewer-list-item";
 
-const InterviewerList = ({ interviewers, value, setInterviewer }) => {
+export default function DayList(props) {
+  const interviewers = props.interviewers.map(interviewer => {
+    return (
+      <InterviewerListItem
+        key={interviewer.id}
+        name={interviewer.name}
+        avatar={interviewer.avatar}
+        setInterviewer={event => props.onChange(interviewer.id)}
+        // props.value makes it depend on the parent value, which happens to be STATE
+        selected={interviewer.id === props.value}
+      />
+    );
+  });
   return (
     <section className="interviewers">
       <h4 className="interviewers__header text--light">Interviewer</h4>
-      <ul className="interviewers__list">
-        {interviewers.map(({ id, ...props }) => (
-          <InterviewerListItem
-            setInterviewer={() => setInterviewer(id)}
-            selected={id === value}
-            id={id}
-            {...props}
-          />
-        ))}
-      </ul>
+      <ul className="interviewers__list">{interviewers}</ul>
     </section>
   );
-};
-
-export default InterviewerList;
+}
