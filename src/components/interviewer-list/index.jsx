@@ -2,7 +2,7 @@ import React from "react";
 import "./interviewer-list.scss";
 import InterviewerListItem from "components/interviewer-list-item";
 
-const InterviewerList = ({ interviewers, interviewer, setInterviewer }) => {
+const InterviewerList = ({ interviewers, value, setInterviewer }) => {
   return (
     <section className="interviewers">
       <h4 className="interviewers__header text--light">Interviewer</h4>
@@ -10,7 +10,7 @@ const InterviewerList = ({ interviewers, interviewer, setInterviewer }) => {
         {interviewers.map(({ id, ...props }) => (
           <InterviewerListItem
             setInterviewer={() => setInterviewer(id)}
-            selected={id === interviewer}
+            selected={id === value}
             id={id}
             {...props}
           />
