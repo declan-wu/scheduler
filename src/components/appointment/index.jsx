@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./appointment.scss";
 
 import Header from "./header";
@@ -59,12 +59,21 @@ const Appointment = ({
       });
   }
 
+  useEffect(() => {
+    if (interview && mode === EMPTY) {
+      transition(SHOW);
+    }
+    if (interview === null && mode === SHOW) {
+      transition(EMPTY);
+    }
+  }, [interview, mode, transition]);
+
   return (
     <article className="appointment">
       <Header time={time} />
 
       {mode === EMPTY && <Empty onAdd={() => transition(CREATE)} />}
-      {mode === SHOW && (
+      {mode === SHOW && interview && (
         <Show
           student={interview.student}
           interviewer={interview.interviewer}
