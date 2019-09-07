@@ -69,8 +69,8 @@ const useApplicationData = () => {
   const setDay = day => dispatch({ type: SET_DAY, value: day });
 
   const updateObjectInArray = (array, action) => {
-    return array.map((item, index) => {
-      return index !== action.index
+    return array.map((item, idx) => {
+      return idx !== action.idx
         ? item
         : {
             ...item,
@@ -90,11 +90,10 @@ const useApplicationData = () => {
     } else if (appointmentId > 5) {
       dayId = 1;
     }
-
     return dayId;
   };
 
-  function bookInterview(id, interview) {
+  const bookInterview = (id, interview) => {
     return Axios.put(`/api/appointments/${id}`, { interview }).then(
       response => {
         if (response.status >= 200 && response.status < 300) {
@@ -125,9 +124,9 @@ const useApplicationData = () => {
         }
       }
     );
-  }
+  };
 
-  function cancelInterview(id) {
+  const cancelInterview = id => {
     return Axios.delete(`/api/appointments/${id}`).then(response => {
       if (response.status >= 200 && response.status < 300) {
         const appointment = {
@@ -151,16 +150,15 @@ const useApplicationData = () => {
         console.log(`There was an error. Response was ${response}`);
       }
     });
-  }
+  };
 
-  // This is for the implementing websocket
+  // implementing websockets
   useEffect(() => {
     const sock = new WebSocket(process.env.REACT_APP_WEBSOCKET_URL);
     sock.onopen = () => {
       sock.send("ping");
     };
     sock.onmessage = event => {
-      // console.log('Messaged recieved:', JSON.parse(event.data));
       if (JSON.parse(event.data).type === SET_INTERVIEW) {
         const { type, id, interview } = JSON.parse(event.data);
         const dayId = getDayId(id);
@@ -180,8 +178,7 @@ const useApplicationData = () => {
           dispatch({ type: SET_SPOTS, value: days });
         }
 
-        // check if user is editing existing appointment or adding new
-        // only dispatch a change for spot state if adding new
+        // check if user is adding new, if so dispatch a change for spot state else it's editing existing appointment
         if (!state.appointments[id].interview) {
           const days = updateObjectInArray(state.days, {
             index: dayId,
