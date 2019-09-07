@@ -39,20 +39,14 @@ const useApplicationData = () => {
   };
 
   const getWeekDay = date => {
-    const weekdays = [
-      "Sunday",
-      "Monday",
-      "Tuesday",
-      "Wednesday",
-      "Thursday",
-      "Friday",
-      "Saturday"
-    ];
+    const weekdays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
     if (typeof date === "string") {
-      return weekdays.indexOf(date) - 1;
+      return weekdays.indexOf(date);
     }
     const day = date.getDay();
-    return weekdays[day];
+    // since we are not scheduling interview for saturday and sunday
+    // we apply condition to check if the day we receie is 0, or 6, if so, we return 0 else we return the item in the array, which should be of index day-1 to offset for 0 idx
+    return weekdays[day - 1];
   };
 
   const [state, dispatch] = useReducer(reducer, {
