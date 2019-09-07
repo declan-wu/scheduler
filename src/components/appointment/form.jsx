@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Button from "components/button/";
 import InterviewerList from "components/interviewer-list";
 
-export default function Form(props) {
+const Form = props => {
   const [interviewer, setInterviewer] = useState(props.interviewer || null);
   const [studentName, setStudentName] = useState(props.name || "");
 
@@ -50,4 +50,6 @@ export default function Form(props) {
       </section>
     </main>
   );
-}
+};
+
+export default Form;

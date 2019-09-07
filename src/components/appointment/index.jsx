@@ -30,7 +30,7 @@ const Appointment = ({
 
   const { mode, transition, back } = useVisualMode(interview ? SHOW : EMPTY);
 
-  function save(name, interviewer) {
+  const save = (name, interviewer) => {
     const interview = {
       student: name,
       interviewer
@@ -47,9 +47,9 @@ const Appointment = ({
           console.log(err);
         });
     }
-  }
+  };
 
-  function deleteItem() {
+  const deleteItem = () => {
     transition(DELETING, true);
     cancelInterview(id)
       .then(() => transition(EMPTY))
@@ -57,7 +57,7 @@ const Appointment = ({
         transition(ERROR_DELETE, true);
         console.log(err);
       });
-  }
+  };
 
   useEffect(() => {
     if (interview && mode === EMPTY) {

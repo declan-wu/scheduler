@@ -1,5 +1,4 @@
 import React from "react";
-import axios from "axios";
 import "./app.scss";
 import DayList from "components/day-list/";
 import Appointment from "components/appointment/";
@@ -10,7 +9,7 @@ import {
   getInterviewersForDay
 } from "helpers/selectors";
 
-export default function Application() {
+const Application = () => {
   const {
     state,
     setDay,
@@ -40,12 +39,12 @@ export default function Application() {
         />
       </section>
       <section className="schedule">
-        {appointments.map(elem => {
-          const interview = getInterview(state, elem.interview);
+        {appointments.map(appointment => {
+          const interview = getInterview(state, appointment.interview);
           return (
             <Appointment
-              {...elem}
-              key={elem.id}
+              {...appointment}
+              key={appointment.id}
               interview={interview}
               interviewers={interviewers}
               bookInterview={bookInterview}
@@ -57,4 +56,6 @@ export default function Application() {
       </section>
     </main>
   );
-}
+};
+
+export default Application;
