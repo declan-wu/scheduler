@@ -68,23 +68,17 @@ const useApplicationData = () => {
 
   const setDay = day => dispatch({ type: SET_DAY, value: day });
 
-  // helper func
   const updateObjectInArray = (array, action) => {
     return array.map((item, index) => {
-      if (index !== action.index) {
-        // This isn't the item we care about - keep it as-is
-        return item;
-      }
-
-      // Otherwise, this is the one we want - return an updated value
-      return {
-        ...item,
-        spots: action.item
-      };
+      return index !== action.index
+        ? item
+        : {
+            ...item,
+            spots: action.item
+          };
     });
   };
 
-  // helper func
   const getDayId = appointmentId => {
     let dayId = 0;
     if (appointmentId > 20) {
@@ -159,7 +153,7 @@ const useApplicationData = () => {
     });
   }
 
-  // websocket
+  // This is for the implementing websocket
   useEffect(() => {
     const sock = new WebSocket(process.env.REACT_APP_WEBSOCKET_URL);
     sock.onopen = () => {
