@@ -2,7 +2,7 @@ import React from "react";
 import "./interviewer-list.scss";
 import InterviewerListItem from "components/interviewer-list-item";
 
-const DayList = ({ value, onChange, interviewers }) => {
+const InterviewerList = ({ value, onChange, interviewers }) => {
   return (
     <section className="interviewers">
       <h4 className="interviewers__header text--light">Interviewer</h4>
@@ -23,4 +23,4 @@ const DayList = ({ value, onChange, interviewers }) => {
   );
 };
 
-export default DayList;
+export default InterviewerList;

@@ -2,7 +2,7 @@ import React from "react";
 import classNames from "classnames";
 import "./interviewer-list-item.scss";
 
-const DayListItem = ({ setInterviewer, selected, name, avatar }) => {
+const InterviewerListItem = ({ setInterviewer, selected, name, avatar }) => {
   const interviewClass = classNames("interviewers__item", {
     "interviewers__item--selected": selected
   });
@@ -15,4 +15,4 @@ const DayListItem = ({ setInterviewer, selected, name, avatar }) => {
   );
 };
 
-export default DayListItem;
+export default InterviewerListItem;
