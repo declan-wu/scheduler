@@ -1,8 +1,12 @@
 import React from "react";
 import "./interviewer-list.scss";
 import InterviewerListItem from "components/interviewer-list-item";
-
+import PropTypes from "prop-types";
 const InterviewerList = ({ value, onChange, interviewers }) => {
+  InterviewerList.propTypes = {
+    value: PropTypes.number,
+    onChange: PropTypes.func.isRequired
+  };
   return (
     <section className="interviewers">
       <h4 className="interviewers__header text--light">Interviewer</h4>
