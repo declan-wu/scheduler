@@ -1,7 +1,12 @@
+/*
+  We are rendering `<Application />` down below, so we need React.createElement
+*/
 import React from "react";
 
-import Application from "components/app/app.js";
-
+/*
+  We import our helper functions from the react-testing-library
+  The render function allows us to render Components
+*/
 import {
   getByText,
   prettyDOM,
@@ -19,6 +24,8 @@ import {
 } from "@testing-library/react";
 
 import axios from "axios";
+import Appointment from "components/appointment/";
+import Form from "components/appointment/form";
 
 afterEach(cleanup);
 
