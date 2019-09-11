@@ -1,43 +1,14 @@
 import { useEffect, useReducer } from "react";
 import Axios from "axios";
 
+import reducer, {
+  SET_DAY,
+  SET_APPLICATION_DATA,
+  SET_INTERVIEW,
+  SET_SPOTS
+} from "reducers/application";
+
 const useApplicationData = () => {
-  const SET_DAY = "SET_DAY";
-  const SET_APPLICATION_DATA = "SET_APPLICATION_DATA";
-  const SET_INTERVIEW = "SET_INTERVIEW";
-  const SET_SPOTS = "SET_SPOTS";
-
-  const reducer = (state, action) => {
-    switch (action.type) {
-      case SET_DAY:
-        return {
-          ...state,
-          day: action.value
-        };
-      case SET_APPLICATION_DATA:
-        return {
-          ...state,
-          days: action.value[0].data,
-          appointments: action.value[1].data,
-          interviewers: action.value[2].data
-        };
-      case SET_INTERVIEW:
-        return {
-          ...state,
-          appointments: action.value
-        };
-      case SET_SPOTS:
-        return {
-          ...state,
-          days: action.value
-        };
-      default:
-        throw new Error(
-          `Tried to reduce with unsupported action type: ${action.type}`
-        );
-    }
-  };
-
   const getWeekDay = date => {
     const weekdays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
     if (typeof date === "string") {
@@ -50,7 +21,7 @@ const useApplicationData = () => {
   };
 
   const [state, dispatch] = useReducer(reducer, {
-    day: getWeekDay(new Date()),
+    day: "Monday",
     days: [],
     appointments: {},
     interviewers: {}
@@ -68,17 +39,23 @@ const useApplicationData = () => {
 
   const setDay = day => dispatch({ type: SET_DAY, value: day });
 
+  // helper func
   const updateObjectInArray = (array, action) => {
-    return array.map((item, idx) => {
-      return idx !== action.idx
-        ? item
-        : {
-            ...item,
-            spots: action.item
-          };
+    return array.map((item, index) => {
+      if (index !== action.index) {
+        // This isn't the item we care about - keep it as-is
+        return item;
+      }
+
+      // Otherwise, this is the one we want - return an updated value
+      return {
+        ...item,
+        spots: action.item
+      };
     });
   };
 
+  // helper func
   const getDayId = appointmentId => {
     let dayId = 0;
     if (appointmentId > 20) {
@@ -90,6 +67,7 @@ const useApplicationData = () => {
     } else if (appointmentId > 5) {
       dayId = 1;
     }
+
     return dayId;
   };
 
@@ -107,8 +85,6 @@ const useApplicationData = () => {
             [id]: appointment
           };
 
-          // check if user is editing existing appointment or adding new
-          // only dispatch a change for spot state if adding new
           if (!state.appointments[id].interview) {
             const dayId = getWeekDay(state.day);
             const days = updateObjectInArray(state.days, {
@@ -152,7 +128,7 @@ const useApplicationData = () => {
     });
   };
 
-  // implementing websockets
+  // for websocket
   useEffect(() => {
     const sock = new WebSocket(process.env.REACT_APP_WEBSOCKET_URL);
     sock.onopen = () => {
@@ -168,7 +144,6 @@ const useApplicationData = () => {
           interview: { ...interview }
         };
 
-        // check if interview is deleted
         if (!interview) {
           appointment.interview = null;
           const days = updateObjectInArray(state.days, {
@@ -178,7 +153,6 @@ const useApplicationData = () => {
           dispatch({ type: SET_SPOTS, value: days });
         }
 
-        // check if user is adding new, if so dispatch a change for spot state else it's editing existing appointment
         if (!state.appointments[id].interview) {
           const days = updateObjectInArray(state.days, {
             index: dayId,
