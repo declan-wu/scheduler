@@ -1,4 +1,5 @@
-import getAppointmentsForDay, {
+import {
+  getAppointmentsForDay,
   getInterview,
   getInterviewersForDay
 } from "helpers/selectors";
